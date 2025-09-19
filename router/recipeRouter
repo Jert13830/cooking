@@ -1,0 +1,75 @@
+
+const recipeRouter = require("express").Router();
+const  recipeModel = require("../models/recipeModel.js");
+
+recipeRouter.get("/recipes", async(req,res)=>{
+    try{
+        const recipes = await  recipeModel.find()
+        .populate('ingredients.ingredient')
+        .exec();
+        res.json(recipes);
+    }catch (error){
+        res.json(error.message);
+    }
+});
+
+recipeRouter.get("/recipes/:id", async(req,res)=>{
+    try{
+        //const recipes = await  recipeModel.findById(req.params.id).populate("recipe");
+        const recipes = await  recipeModel.findOne({_id: req.params.id})
+        .populate('ingredients.ingredient')// this gets ingredient's info rather than just the id
+        .exec();
+        res.json(recipes);
+    }catch (error){
+        res.json(error.message);
+    }
+});
+
+recipeRouter.put("/recipes/:id", async(req,res)=>{
+    try{
+        const recipes = await  recipeModel.updateOne({_id: req.params.id},req.body);
+        //const recipes = await  recipeModel.findByIdAndUpdate(req.params.id,req.body);
+        res.json(recipes);
+    }catch (error){
+        res.json(error.message);
+    }
+});
+
+recipeRouter.delete("/recipes/:id", async(req,res)=>{
+    try{
+        //const recipes = await  recipeModel.deleteOne({_id: req.params.id});
+        const recipes = await  recipeModel.findByIdAndDelete(req.params.id);
+        res.json(recipes);
+    }catch (error){
+        res.json(error.message);
+    }
+});
+
+recipeRouter.post("/recipes", async(req,res)=>{
+    try{
+        const data = req.body;
+        const recipes = new  recipeModel({
+            title : data.title,
+            ingredients : data.ingredients,
+            instructions : data.instructions,
+            preparationTime : data.preparationTime,
+            cookingTime : data.cookingTime,
+            difficulty  : data.difficulty,
+            category : data.category,
+            serves : data.serves
+         })
+
+            await recipes.save()
+            res.json({
+                message : "recipes created with success",
+                data: recipes
+            });
+
+    }catch (error){
+         res.json(error.message);
+    }
+})
+
+
+
+module.exports = recipeRouter;

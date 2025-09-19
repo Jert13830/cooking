@@ -1,0 +1,65 @@
+
+const ingredientRouter = require("express").Router();
+const ingredientModel = require("../models/ingredientModel.js");
+
+ingredientRouter.get("/ingredients", async(req,res)=>{
+    try{
+        const ingredients = await ingredientModel.find();
+        res.json(ingredients);
+    }catch (error){
+        res.json(error.message);
+    }
+});
+
+ingredientRouter.get("/ingredients/:id", async(req,res)=>{
+    try{
+        const ingredients = await ingredientModel.findById(req.params.id);
+        //const ingredients = await ingredientModel.findOne({_id: req.params.id});
+        res.json(ingredients);
+    }catch (error){
+        res.json(error.message);
+    }
+});
+
+ingredientRouter.put("/ingredients/:id", async(req,res)=>{
+    try{
+        //const ingredients = await ingredientModel.updateOne({_id: req.params.id},req.body);
+        const ingredients = await ingredientModel.findByIdAndUpdate(req.params.id,req.body);
+        res.json(ingredients);
+    }catch (error){
+        res.json(error.message);
+    }
+});
+
+ingredientRouter.delete("/ingredients/:id", async(req,res)=>{
+    try{
+        //const ingredients = await ingredientModel.deleteOne({_id: req.params.id});
+        const ingredients = await ingredientModel.findByIdAndDelete(req.params.id);
+        res.json(ingredients);
+    }catch (error){
+        res.json(error.message);
+    }
+});
+
+ingredientRouter.post("/ingredients", async(req,res)=>{
+    try{
+        const data = req.body;
+        const ingredients = new ingredientModel({
+            name : data.name,
+            colour: data.colour,
+            origin : data.origin
+            })
+
+            await ingredients.save()
+            res.json({
+                message : "ingredients created with success",
+                data: ingredients
+            });
+
+    }catch (error){
+         res.json(error.message);
+    }
+})
+
+
+module.exports = ingredientRouter;
