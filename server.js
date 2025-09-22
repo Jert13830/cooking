@@ -2,8 +2,8 @@
 const express = require ('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const recipeRouter = require('./router/recipeRouter');
-const ingredientsRouter = require('./router/ingredientRouter');
+const recipeRouter = require('./routers/recipeRouter');
+const ingredientsRouter = require('./routers/ingredientRouter');
 
 const app = express();
 const port = 3000;

@@ -42,7 +42,7 @@ const recipeSchema = mongoose.Schema({
         required: [true, "The difficulty level is required"],
         match:/^[A-Za-z\s]+[A-Za-z0-9\s\-\'\(\)&,]+$/,
         enum: {
-            values: ["Easy", "Average", "Difficult"],
+            values: ["easy", "average", "difficult"],
             message: "The value should be Easy, Average or Difficult"
         }
     },
@@ -51,7 +51,7 @@ const recipeSchema = mongoose.Schema({
         required: [true, "The difficulty level is required"],
         match:/^[A-Za-z\s]+[A-Za-z0-9\s\-\'\(\)&,]+$/,
         enum: {
-            values: ["Starter", "Main dish", "Dessert"],
+            values: ["starter", "main dish", "dessert"],
             message: "The value should be Starter, Main dish or Dessert"
         }
     },
